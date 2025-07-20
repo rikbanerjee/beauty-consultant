@@ -51,7 +51,7 @@ Be warm, approachable, and professional. Ask clarifying questions as needed for 
 
 Treat every user uniquely and keep feedback encouraging and positive. You may offer visual examples when possible. Never guess without sufficient visual data.`;
 
-async function analyzeImage(imagePath, provider = 'gemini', customPrompt = null) {
+async function analyzeImage(imageBuffer, provider = 'gemini', customPrompt = null) {
   try {
     // Check if API keys are available
     if (provider === 'openai' && !openai) {
@@ -63,7 +63,7 @@ async function analyzeImage(imagePath, provider = 'gemini', customPrompt = null)
     }
     
     // Process image for AI compatibility
-    const processedImageBuffer = await processImageForAI(imagePath);
+    const processedImageBuffer = await processImageForAI(imageBuffer);
     
     // Use custom prompt if provided, otherwise use default
     const promptToUse = customPrompt || DEFAULT_ANALYSIS_PROMPT;
@@ -79,10 +79,10 @@ async function analyzeImage(imagePath, provider = 'gemini', customPrompt = null)
   }
 }
 
-async function processImageForAI(imagePath) {
+async function processImageForAI(imageBuffer) {
   try {
     // Use sharp to process and optimize the image
-    const processedBuffer = await sharp(imagePath)
+    const processedBuffer = await sharp(imageBuffer)
       .resize(1024, 1024, { 
         fit: 'inside',
         withoutEnlargement: true 

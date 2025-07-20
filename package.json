@@ -1,43 +1,30 @@
 {
   "name": "beauty-consultant",
   "version": "1.0.0",
-  "description": "AI-powered skin tone analysis and color recommendations",
-  "main": "index.js",
+  "description": "AI-powered skin tone color analysis application",
+  "main": "backend/server.js",
   "scripts": {
-    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install",
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
-    "dev:backend": "cd backend && npm run dev",
-    "dev:frontend": "cd frontend && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd backend && npm start",
+    "client": "cd frontend && npm start",
     "build": "cd frontend && npm run build",
     "start": "cd backend && npm start",
-    "test": "cd frontend && npm test",
-    "clean": "rm -rf node_modules backend/node_modules frontend/node_modules"
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install"
   },
   "keywords": [
-    "beauty",
     "ai",
-    "skin-tone",
     "color-analysis",
+    "skin-tone",
+    "fashion",
     "react",
-    "express",
-    "openai",
-    "gemini"
+    "nodejs"
   ],
-  "author": "Rik Banerjee",
-  "license": "ISC",
+  "author": "The CustomHub LLC",
+  "license": "MIT",
   "devDependencies": {
     "concurrently": "^8.2.2"
   },
   "engines": {
-    "node": ">=16.0.0",
-    "npm": ">=8.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/rikbanerjee/beauty-consultant.git"
-  },
-  "bugs": {
-    "url": "https://github.com/rikbanerjee/beauty-consultant/issues"
-  },
-  "homepage": "https://github.com/rikbanerjee/beauty-consultant#readme"
+    "node": ">=18.0.0"
+  }
 } 

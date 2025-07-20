@@ -1,8 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
 require('dotenv').config();
 
 const { analyzeImage } = require('./services/aiService');
@@ -10,41 +8,26 @@ const { parseAnalysisResponse } = require('./utils/parser');
 const { createTestResponse } = require('./utils/testResponses');
 
 const app = express();
-const PORT = process.env.PORT || 5001;
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://your-app-name.vercel.app', 'https://your-custom-domain.com'] 
+    : 'http://localhost:3000',
   credentials: true
 }));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// Create uploads directory if it doesn't exist
-const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadsDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-  }
-});
-
+// Configure multer for memory storage (Vercel serverless)
 const upload = multer({
-  storage: storage,
+  storage: multer.memoryStorage(),
   limits: {
     fileSize: 10 * 1024 * 1024 // 10MB limit
   },
   fileFilter: (req, file, cb) => {
     const allowedTypes = /jpeg|jpg|png|webp/;
-    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+    const extname = allowedTypes.test(file.originalname.toLowerCase());
     const mimetype = allowedTypes.test(file.mimetype);
     
     if (mimetype && extname) {
@@ -54,6 +37,8 @@ const upload = multer({
     }
   }
 });
+
+
 
 // Routes
 app.get('/api/health', (req, res) => {
@@ -121,15 +106,12 @@ app.post('/api/analyze', upload.single('image'), async (req, res) => {
     }
 
     // Real AI analysis
-    const imagePath = req.file.path;
+    const imageBuffer = req.file.buffer;
     const customPrompt = req.body.customPrompt;
-    const analysisResult = await analyzeImage(imagePath, aiProvider, customPrompt);
+    const analysisResult = await analyzeImage(imageBuffer, aiProvider, customPrompt);
     
     // Parse the AI response into structured sections
     const parsedSections = parseAnalysisResponse(analysisResult.raw_response);
-    
-    // Clean up uploaded file
-    fs.unlinkSync(imagePath);
 
     res.json({
       success: true,
@@ -148,11 +130,6 @@ app.post('/api/analyze', upload.single('image'), async (req, res) => {
 
   } catch (error) {
     console.error('Analysis error:', error);
-    
-    // Clean up file if it exists
-    if (req.file && fs.existsSync(req.file.path)) {
-      fs.unlinkSync(req.file.path);
-    }
 
     res.status(500).json({
       success: false,
@@ -178,8 +155,5 @@ app.use('*', (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Beauty Consultant Backend running on port ${PORT}`);
-  console.log(`📱 Frontend URL: ${process.env.FRONTEND_URL || 'http://localhost:3000'}`);
-  console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
-}); 
+// Export for Vercel
+module.exports = app; 

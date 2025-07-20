@@ -1,0 +1,143 @@
+.test-mode-section {
+  margin: 20px 0;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+}
+
+.test-mode-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 500;
+  color: #495057;
+}
+
+.test-mode-toggle input[type="checkbox"] {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+  background-color: #ccc;
+  border-radius: 24px;
+  transition: 0.3s;
+  margin-right: 12px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.3s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.test-mode-toggle input[type="checkbox"]:checked + .toggle-slider {
+  background-color: #667eea;
+}
+
+.test-mode-toggle input[type="checkbox"]:checked + .toggle-slider:before {
+  transform: translateX(26px);
+}
+
+.toggle-label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.test-mode-options {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #dee2e6;
+}
+
+.test-mode-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #dee2e6;
+}
+
+.status-indicator {
+  color: #6c757d;
+  font-size: 12px;
+}
+
+.status-indicator.active {
+  color: #28a745;
+}
+
+.status-text {
+  font-size: 14px;
+  color: #495057;
+  font-weight: 500;
+}
+
+/* Form controls */
+.form-group {
+  margin: 16px 0;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #495057;
+  font-size: 14px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  background: white;
+  color: #495057;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .test-mode-section {
+    padding: 16px;
+  }
+  
+  .toggle-slider {
+    width: 44px;
+    height: 22px;
+  }
+  
+  .toggle-slider:before {
+    height: 16px;
+    width: 16px;
+  }
+  
+  .test-mode-toggle input[type="checkbox"]:checked + .toggle-slider:before {
+    transform: translateX(22px);
+  }
+} 

@@ -1,0 +1,43 @@
+{
+  "name": "beauty-consultant",
+  "version": "1.0.0",
+  "description": "AI-powered skin tone analysis and color recommendations",
+  "main": "index.js",
+  "scripts": {
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm start",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start",
+    "test": "cd frontend && npm test",
+    "clean": "rm -rf node_modules backend/node_modules frontend/node_modules"
+  },
+  "keywords": [
+    "beauty",
+    "ai",
+    "skin-tone",
+    "color-analysis",
+    "react",
+    "express",
+    "openai",
+    "gemini"
+  ],
+  "author": "Rik Banerjee",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rikbanerjee/beauty-consultant.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rikbanerjee/beauty-consultant/issues"
+  },
+  "homepage": "https://github.com/rikbanerjee/beauty-consultant#readme"
+} 

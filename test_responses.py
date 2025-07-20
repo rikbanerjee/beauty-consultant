@@ -41,8 +41,28 @@ class MockAnalysisResponses:
                     # New structured format
                     excellent_choices = response['parsed_sections']['fashion_colors'].get('excellent_choices', '')
                     if excellent_choices:
-                        _, palette_html = extract_and_format_colors(excellent_choices)
-                        response['parsed_sections']['fashion_colors_palette'] = palette_html
+                        # Try to extract hex colors from the raw response first
+                        import json
+                        try:
+                            raw_response = response['raw_response']
+                            json_start = raw_response.find('{')
+                            json_end = raw_response.rfind('}') + 1
+                            if json_start != -1 and json_end > json_start:
+                                json_content = raw_response[json_start:json_end]
+                                data = json.loads(json_content)
+                                color_palette_hex = data.get('recommendations', {}).get('fashion_colors', {}).get('color_palette_hex', [])
+                                if color_palette_hex:
+                                    from app import create_palette_from_hex
+                                    response['parsed_sections']['fashion_colors_palette'] = create_palette_from_hex(color_palette_hex)
+                                else:
+                                    _, palette_html = extract_and_format_colors(excellent_choices)
+                                    response['parsed_sections']['fashion_colors_palette'] = palette_html
+                            else:
+                                _, palette_html = extract_and_format_colors(excellent_choices)
+                                response['parsed_sections']['fashion_colors_palette'] = palette_html
+                        except:
+                            _, palette_html = extract_and_format_colors(excellent_choices)
+                            response['parsed_sections']['fashion_colors_palette'] = palette_html
                 else:
                     # Old string format
                     _, palette_html = extract_and_format_colors(response['parsed_sections']['fashion_colors'])
@@ -57,128 +77,72 @@ class MockAnalysisResponses:
         return list(self.responses.keys())
     
     def _get_warm_autumn_response(self):
-        """Mock response for Warm Autumn skin tone."""
+        """Mock response for Warm Autumn skin tone in JSON format."""
         return {
-            'raw_response': """Okay, let's do a color analysis! I'm excited to help you discover your best colors.
-
-From the image, I observe the following:
-
-*   **Skin Tone:** Medium
-*   **Undertone:** The skin seems to have a warm, golden undertone.
-*   **Contrast:** There is a medium to high contrast between the hair, skin, and eyes.
-
-Based on these observations, I believe you might be a **Warm Autumn** or a **True Autumn**.
-
-**Here's why:**
-
-*   **Warm Undertone:** The golden undertone of your skin aligns perfectly with the warmth of the Autumn seasons.
-*   **Medium-High Contrast:** Autumns typically have medium to high contrast, which appears to be present in your features.
-
-## **Recommendations for a Warm/True Autumn:**
-
-Here's how to make the most of your natural coloring:
-
-### **Fashion Colors:**
-
-Embrace earthy, rich, and warm colors. Think of the colors of a forest in autumn.
-
-*   **Neutrals:** Camel, olive green, chocolate brown, warm gray, and ivory.
-*   **Colors:** Mustard yellow, burnt orange, rust, forest green, teal, and tomato red.
-
-Here is a sample color palette to give you an idea:
-- Primary: Warm browns, golden yellows, and rich oranges
-- Secondary: Forest greens, teal blues, and warm reds
-- Accents: Cream, beige, and warm grays""",
+            'raw_response': """{
+  "seasonal_type": "Warm Autumn",
+  "analysis": {
+    "skin_tone": "Medium skin tone with golden undertones",
+    "undertone": "Warm",
+    "contrast": "Medium to High"
+  },
+  "recommendations": {
+    "fashion_colors": {
+      "best_colors_description": "Embrace earthy, rich, and warm colors. Think of the colors of a forest in autumn. Your best colors include camel, olive green, chocolate brown, warm gray, ivory, mustard yellow, burnt orange, rust, forest green, teal, and tomato red. These colors will enhance your natural warmth and create a harmonious look.",
+      "color_palette_hex": ["#C19A6B", "#6B8E23", "#7B3F00", "#8B7355", "#FFFFF0", "#FFD700", "#CC5500", "#B7410E"]
+    },
+    "hair_color": "For hair color, consider warm browns with golden undertones, rich auburn or copper tones, golden blonde highlights, or deep chocolate brown. Avoid cool tones like ash blonde or platinum as they may clash with your warm undertones.",
+    "makeup": {
+      "foundation": "Choose a foundation that matches your medium skin tone with warm, golden undertones. Look for formulas that enhance your natural warmth.",
+      "blush": "Opt for warm, peachy tones like peach blush with golden undertones, terracotta or coral shades, and warm rose colors. Avoid cool pinks or mauve tones.",
+      "lipstick": "Choose warm, rich lip colors such as terracotta or brick red, warm coral or peach, rich brown-based nudes, and golden orange tones. Avoid cool pinks or blue-based reds.",
+      "eyeshadow": "Select warm, earthy eye colors including golden browns and bronzes, warm taupe and camel, terracotta and rust tones, and forest green and olive. Avoid cool grays or silver tones."
+    }
+  },
+  "final_encouragement": "Your Warm Autumn coloring is absolutely stunning! These rich, earthy tones will make you glow and bring out the natural warmth in your features. Remember, confidence is your best accessory!"
+}""",
             
             'parsed_sections': {
                 'observations': {
-                    'skin_tone': 'Medium',
-                    'undertone': 'Warm, golden undertone',
-                    'contrast': 'Medium to high contrast',
-                    'overall_type': 'Warm Autumn or True Autumn'
+                    'skin_tone': 'Medium skin tone with golden undertones',
+                    'undertone': 'Warm',
+                    'contrast': 'Medium to High',
+                    'overall_type': 'Warm Autumn'
                 },
-                'reasoning': """*   **Warm Undertone:** The golden undertone of your skin aligns perfectly with the warmth of the Autumn seasons.
-*   **Medium-High Contrast:** Autumns typically have medium to high contrast, which appears to be present in your features.""",
+                'reasoning': 'Your Warm Autumn coloring is absolutely stunning! These rich, earthy tones will make you glow and bring out the natural warmth in your features. Remember, confidence is your best accessory!',
                 'fashion_colors': {
-                    'excellent_choices': """**Excellent Choices:**
-
-Embrace earthy, rich, and warm colors. Think of the colors of a forest in autumn.
-
-*   **Neutrals:** Camel, olive green, chocolate brown, warm gray, and ivory.
-*   **Colors:** Mustard yellow, burnt orange, rust, forest green, teal, and tomato red.
-
-Here is a sample color palette to give you an idea:
-- Primary: Warm browns, golden yellows, and rich oranges
-- Secondary: Forest greens, teal blues, and warm reds
-- Accents: Cream, beige, and warm grays""",
-                    'hair_colors': """**Hair Colors:**
-
-For hair color, consider:
-- Warm browns with golden undertones
-- Rich auburn or copper tones
-- Golden blonde highlights
-- Deep chocolate brown
-- Avoid cool tones like ash blonde or platinum""",
+                    'excellent_choices': 'Embrace earthy, rich, and warm colors. Think of the colors of a forest in autumn. Your best colors include camel, olive green, chocolate brown, warm gray, ivory, mustard yellow, burnt orange, rust, forest green, teal, and tomato red. These colors will enhance your natural warmth and create a harmonious look.',
+                    'hair_colors': 'For hair color, consider warm browns with golden undertones, rich auburn or copper tones, golden blonde highlights, or deep chocolate brown. Avoid cool tones like ash blonde or platinum as they may clash with your warm undertones.',
                     'makeup': {
-                        'blush': """**Blush:**
-
-Opt for warm, peachy tones:
-- Peach blush with golden undertones
-- Terracotta or coral shades
-- Warm rose colors
-- Avoid cool pinks or mauve tones""",
-                        'lipstick': """**Lipstick:**
-
-Choose warm, rich lip colors:
-- Terracotta or brick red
-- Warm coral or peach
-- Rich brown-based nudes
-- Golden orange tones
-- Avoid cool pinks or blue-based reds""",
-                        'eyeshadow': """**Eyeshadow:**
-
-Select warm, earthy eye colors:
-- Golden browns and bronzes
-- Warm taupe and camel
-- Terracotta and rust tones
-- Forest green and olive
-- Avoid cool grays or silver tones"""
+                        'blush': 'Opt for warm, peachy tones like peach blush with golden undertones, terracotta or coral shades, and warm rose colors. Avoid cool pinks or mauve tones.',
+                        'lipstick': 'Choose warm, rich lip colors such as terracotta or brick red, warm coral or peach, rich brown-based nudes, and golden orange tones. Avoid cool pinks or blue-based reds.',
+                        'eyeshadow': 'Select warm, earthy eye colors including golden browns and bronzes, warm taupe and camel, terracotta and rust tones, and forest green and olive. Avoid cool grays or silver tones.'
                     }
                 },
                 'fashion_colors_palette': '',
-                'disclaimer': """**Disclaimer:**
-
-This analysis is based on the provided image and general color theory principles. Individual results may vary based on lighting conditions, camera settings, and personal preferences. For the most accurate color analysis, consider consulting with a professional color consultant in person. The recommendations provided are suggestions and should be adapted to your personal style and comfort level.""",
-                'full_response': """Okay, let's do a color analysis! I'm excited to help you discover your best colors.
-
-From the image, I observe the following:
-
-*   **Skin Tone:** Medium
-*   **Undertone:** The skin seems to have a warm, golden undertone.
-*   **Contrast:** There is a medium to high contrast between the hair, skin, and eyes.
-
-Based on these observations, I believe you might be a **Warm Autumn** or a **True Autumn**.
-
-**Here's why:**
-
-*   **Warm Undertone:** The golden undertone of your skin aligns perfectly with the warmth of the Autumn seasons.
-*   **Medium-High Contrast:** Autumns typically have medium to high contrast, which appears to be present in your features.
-
-## **Recommendations for a Warm/True Autumn:**
-
-Here's how to make the most of your natural coloring:
-
-### **Fashion Colors:**
-
-Embrace earthy, rich, and warm colors. Think of the colors of a forest in autumn.
-
-*   **Neutrals:** Camel, olive green, chocolate brown, warm gray, and ivory.
-*   **Colors:** Mustard yellow, burnt orange, rust, forest green, teal, and tomato red.
-
-Here is a sample color palette to give you an idea:
-- Primary: Warm browns, golden yellows, and rich oranges
-- Secondary: Forest greens, teal blues, and warm reds
-- Accents: Cream, beige, and warm grays"""
+                'disclaimer': '',
+                'full_response': """{
+  "seasonal_type": "Warm Autumn",
+  "analysis": {
+    "skin_tone": "Medium skin tone with golden undertones",
+    "undertone": "Warm",
+    "contrast": "Medium to High"
+  },
+  "recommendations": {
+    "fashion_colors": {
+      "best_colors_description": "Embrace earthy, rich, and warm colors. Think of the colors of a forest in autumn. Your best colors include camel, olive green, chocolate brown, warm gray, ivory, mustard yellow, burnt orange, rust, forest green, teal, and tomato red. These colors will enhance your natural warmth and create a harmonious look.",
+      "color_palette_hex": ["#C19A6B", "#6B8E23", "#7B3F00", "#8B7355", "#FFFFF0", "#FFD700", "#CC5500", "#B7410E"]
+    },
+    "hair_color": "For hair color, consider warm browns with golden undertones, rich auburn or copper tones, golden blonde highlights, or deep chocolate brown. Avoid cool tones like ash blonde or platinum as they may clash with your warm undertones.",
+    "makeup": {
+      "foundation": "Choose a foundation that matches your medium skin tone with warm, golden undertones. Look for formulas that enhance your natural warmth.",
+      "blush": "Opt for warm, peachy tones like peach blush with golden undertones, terracotta or coral shades, and warm rose colors. Avoid cool pinks or mauve tones.",
+      "lipstick": "Choose warm, rich lip colors such as terracotta or brick red, warm coral or peach, rich brown-based nudes, and golden orange tones. Avoid cool pinks or blue-based reds.",
+      "eyeshadow": "Select warm, earthy eye colors including golden browns and bronzes, warm taupe and camel, terracotta and rust tones, and forest green and olive. Avoid cool grays or silver tones."
+    }
+  },
+  "final_encouragement": "Your Warm Autumn coloring is absolutely stunning! These rich, earthy tones will make you glow and bring out the natural warmth in your features. Remember, confidence is your best accessory!"
+}"""
             }
         }
     

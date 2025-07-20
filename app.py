@@ -84,7 +84,92 @@ def analyze_with_gemini(image_path, prompt):
         return f"Error analyzing with Gemini: {str(e)}"
 
 def parse_analysis_response(response_text):
-    """Parse AI response into structured sections"""
+    """Parse AI response into structured sections from JSON format"""
+    import json
+    
+    # Default structure for fallback
+    sections = {
+        'observations': {
+            'skin_tone': '',
+            'undertone': '',
+            'contrast': '',
+            'overall_type': ''
+        },
+        'reasoning': '',
+        'fashion_colors': {
+            'excellent_choices': '',
+            'hair_colors': '',
+            'makeup': {
+                'blush': '',
+                'lipstick': '',
+                'eyeshadow': ''
+            }
+        },
+        'fashion_colors_palette': '',
+        'disclaimer': '',
+        'full_response': response_text
+    }
+    
+    try:
+        # Try to parse as JSON first
+        # Look for JSON content in the response (might be wrapped in markdown or other text)
+        json_start = response_text.find('{')
+        json_end = response_text.rfind('}') + 1
+        
+        if json_start != -1 and json_end > json_start:
+            json_content = response_text[json_start:json_end]
+            data = json.loads(json_content)
+            
+            # Map JSON structure to our sections format
+            sections['observations']['overall_type'] = data.get('seasonal_type', '')
+            
+            analysis = data.get('analysis', {})
+            sections['observations']['skin_tone'] = analysis.get('skin_tone', '')
+            sections['observations']['undertone'] = analysis.get('undertone', '')
+            sections['observations']['contrast'] = analysis.get('contrast', '')
+            
+            recommendations = data.get('recommendations', {})
+            fashion_colors = recommendations.get('fashion_colors', {})
+            
+            # Fashion colors
+            sections['fashion_colors']['excellent_choices'] = fashion_colors.get('best_colors_description', '')
+            
+            # Hair colors
+            sections['fashion_colors']['hair_colors'] = recommendations.get('hair_color', '')
+            
+            # Makeup
+            makeup = recommendations.get('makeup', {})
+            sections['fashion_colors']['makeup']['blush'] = makeup.get('blush', '')
+            sections['fashion_colors']['makeup']['lipstick'] = makeup.get('lipstick', '')
+            sections['fashion_colors']['makeup']['eyeshadow'] = makeup.get('eyeshadow', '')
+            
+            # Generate color palette from hex codes if available
+            color_palette_hex = fashion_colors.get('color_palette_hex', [])
+            if color_palette_hex:
+                sections['fashion_colors_palette'] = create_palette_from_hex(color_palette_hex)
+            else:
+                # Fallback to text-based color extraction
+                if sections['fashion_colors']['excellent_choices']:
+                    _, palette_html = extract_and_format_colors(sections['fashion_colors']['excellent_choices'])
+                    sections['fashion_colors_palette'] = palette_html
+            
+            # Add final encouragement as reasoning
+            sections['reasoning'] = data.get('final_encouragement', '')
+            
+        else:
+            # Fallback to old parsing logic if no JSON found
+            sections = parse_old_format(response_text)
+            
+    except (json.JSONDecodeError, KeyError, TypeError) as e:
+        print(f"JSON parsing failed: {e}")
+        # Fallback to old parsing logic
+        sections = parse_old_format(response_text)
+    
+    return sections
+
+
+def parse_old_format(response_text):
+    """Fallback parsing for old text format"""
     sections = {
         'observations': {
             'skin_tone': '',
@@ -206,6 +291,30 @@ def parse_analysis_response(response_text):
         sections['fashion_colors_palette'] = palette_html
     
     return sections
+
+
+def create_palette_from_hex(hex_colors):
+    """Create color palette HTML from hex color codes"""
+    if not hex_colors:
+        return ''
+    
+    html = '<div class="color-palette">'
+    html += '<h5>Recommended Color Palette:</h5>'
+    html += '<div class="color-swatches">'
+    
+    for i, hex_code in enumerate(hex_colors[:8]):  # Limit to 8 colors
+        # Generate a color name based on the hex code
+        color_name = f"Color {i+1}"
+        
+        html += f'''
+            <div class="color-swatch" title="{color_name}">
+                <div class="color-preview" style="background-color: {hex_code}"></div>
+                <div class="color-name">{color_name}</div>
+            </div>
+        '''
+    
+    html += '</div></div>'
+    return html
 
 @app.route('/')
 def index():

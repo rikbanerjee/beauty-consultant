@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import './ImageUpload.css';
 
@@ -12,7 +12,6 @@ const ImageUpload = ({
   customPrompt,
   setCustomPrompt
 }) => {
-  const [dragOver, setDragOver] = useState(false);
 
   const onDrop = useCallback((acceptedFiles) => {
     const file = acceptedFiles[0];

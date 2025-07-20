@@ -9,6 +9,7 @@ function parseAnalysisResponse(responseText) {
       overall_type: ''
     },
     reasoning: '',
+    final_encouragement: '',
     fashion_colors: {
       excellent_choices: '',
       hair_colors: '',
@@ -69,8 +70,8 @@ function parseAnalysisResponse(responseText) {
         sections.fashion_colors_palette = createPaletteFromHex(color_palette_hex);
       }
       
-      // Add final encouragement as reasoning
-      sections.reasoning = data.final_encouragement || '';
+      // Add final encouragement as separate section
+      sections.final_encouragement = data.final_encouragement || '';
       
     } else {
       // Fallback to old parsing logic if no JSON found

@@ -32,7 +32,8 @@ function createTestResponse(responseType = 'warm_autumn') {
           contrast: 'Medium to High',
           overall_type: 'Warm Autumn'
         },
-        reasoning: 'Your Warm Autumn coloring is absolutely stunning! These rich, earthy tones will make you glow and bring out the natural warmth in your features. Remember, confidence is your best accessory!',
+        reasoning: 'Your Warm Autumn coloring is characterized by rich, earthy tones that complement your natural warmth. The golden undertones in your skin work beautifully with these colors.',
+        final_encouragement: 'Your Warm Autumn coloring is absolutely stunning! These rich, earthy tones will make you glow and bring out the natural warmth in your features. Remember, confidence is your best accessory!',
         fashion_colors: {
           excellent_choices: 'Embrace earthy, rich, and warm colors. Think of the colors of a forest in autumn. Your best colors include camel, olive green, chocolate brown, warm gray, ivory, mustard yellow, burnt orange, rust, forest green, teal, and tomato red. These colors will enhance your natural warmth and create a harmonious look.',
           hair_colors: 'For hair color, consider warm browns with golden undertones, rich auburn or copper tones, golden blonde highlights, or deep chocolate brown. Avoid cool tones like ash blonde or platinum as they may clash with your warm undertones.',
@@ -77,7 +78,8 @@ function createTestResponse(responseType = 'warm_autumn') {
           contrast: 'High',
           overall_type: 'Cool Winter'
         },
-        reasoning: 'Your Cool Winter coloring is absolutely striking! These bold, cool tones will make you stand out and create beautiful contrast. Your natural coolness is your superpower!',
+        reasoning: 'Your Cool Winter coloring is characterized by bold, cool tones that create striking contrast. The cool undertones in your skin work beautifully with these vibrant colors.',
+        final_encouragement: 'Your Cool Winter coloring is absolutely striking! These bold, cool tones will make you stand out and create beautiful contrast. Your natural coolness is your superpower!',
         fashion_colors: {
           excellent_choices: 'Embrace bold, cool, and crisp colors. Think of jewel tones and pure colors. Your best colors include deep emerald green, royal blue, rich purple, true red, hot pink, pure white, charcoal gray, navy blue, black, and silver. These colors will enhance your natural coolness and create striking contrast.',
           hair_colors: 'For hair color, consider cool browns with ashy undertones, platinum blonde, cool black, or silver gray. Avoid warm tones like golden blonde or copper as they may clash with your cool undertones.',

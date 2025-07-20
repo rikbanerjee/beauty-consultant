@@ -4,6 +4,8 @@ import ImageUpload from './components/ImageUpload';
 import AnalysisResults from './components/AnalysisResults';
 import './App.css';
 
+
+
 function App() {
   const [testMode, setTestMode] = useState(false);
   const [testResponseType, setTestResponseType] = useState('random');
@@ -30,8 +32,10 @@ function App() {
       formData.append('aiProvider', selectedProvider);
       formData.append('testMode', testMode);
       formData.append('testResponseType', testResponseType);
+      
+      // Only send custom prompt if user provided one
       if (customPrompt.trim()) {
-        formData.append('customPrompt', customPrompt);
+        formData.append('customPrompt', customPrompt.trim());
       }
 
       const response = await fetch('/api/analyze', {
@@ -103,6 +107,31 @@ function App() {
             />
           </div>
         </main>
+        
+        <footer className="footer">
+          <div className="powered-by">
+            <span>Powered by:</span>
+            <a 
+              href="https://thecustomhub.com/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="company-link"
+            >
+              <div className="company-info">
+                <img 
+                  src="https://thecustomhub.com/cdn/shop/files/thecustomhub-logo.jpg?v=1737938203&width=180" 
+                  alt="The CustomHub LLC Logo" 
+                  className="company-logo"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'inline';
+                  }}
+                />
+                <span className="company-name">The CustomHub</span>
+              </div>
+            </a>
+          </div>
+        </footer>
       </div>
     </div>
   );

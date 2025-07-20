@@ -103,6 +103,7 @@ app.post('/api/analyze', upload.single('image'), async (req, res) => {
           sections: testResponse.parsed_sections,
           observations: testResponse.parsed_sections.observations,
           reasoning: testResponse.parsed_sections.reasoning,
+          finalEncouragement: testResponse.parsed_sections.final_encouragement,
           fashionColors: testResponse.parsed_sections.fashion_colors,
           makeup: testResponse.parsed_sections.fashion_colors.makeup,
           disclaimer: testResponse.parsed_sections.disclaimer,
@@ -121,7 +122,8 @@ app.post('/api/analyze', upload.single('image'), async (req, res) => {
 
     // Real AI analysis
     const imagePath = req.file.path;
-    const analysisResult = await analyzeImage(imagePath, aiProvider);
+    const customPrompt = req.body.customPrompt;
+    const analysisResult = await analyzeImage(imagePath, aiProvider, customPrompt);
     
     // Parse the AI response into structured sections
     const parsedSections = parseAnalysisResponse(analysisResult.raw_response);
@@ -136,6 +138,7 @@ app.post('/api/analyze', upload.single('image'), async (req, res) => {
         sections: parsedSections,
         observations: parsedSections.observations,
         reasoning: parsedSections.reasoning,
+        finalEncouragement: parsedSections.final_encouragement,
         fashionColors: parsedSections.fashion_colors,
         makeup: parsedSections.fashion_colors.makeup,
         disclaimer: parsedSections.disclaimer,

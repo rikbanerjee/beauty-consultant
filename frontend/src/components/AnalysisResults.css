@@ -136,6 +136,34 @@
   color: #fd7e14;
 }
 
+.encouragement-section {
+  border-left-color: #e83e8c;
+  background: linear-gradient(135deg, #fff5f7 0%, #fef0f3 100%);
+  border: 1px solid #fce4ec;
+  box-shadow: 0 4px 20px rgba(232, 62, 140, 0.08);
+  position: relative;
+  overflow: hidden;
+  margin-top: 48px;
+}
+
+.encouragement-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #e83e8c, #fd7e14);
+}
+
+.encouragement-section .section-icon {
+  color: #e83e8c;
+  background: linear-gradient(135deg, #e83e8c, #fd7e14);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .disclaimer-section {
   border-left-color: #6c757d;
   background: #f8f9fa;
@@ -470,6 +498,7 @@
   
   .observations-section,
   .reasoning-section,
+  .encouragement-section,
   .fashion-colors-section,
   .makeup-section,
   .disclaimer-section {

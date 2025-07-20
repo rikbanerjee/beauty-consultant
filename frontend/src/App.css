@@ -46,6 +46,46 @@ body {
   font-size: 1.1rem;
   opacity: 0.9;
   font-weight: 300;
+  margin-bottom: 20px;
+}
+
+.powered-by {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.powered-by span {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  font-weight: 400;
+}
+
+.company-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.company-logo {
+  height: 30px;
+  width: auto;
+  border-radius: 4px;
+  object-fit: contain;
+}
+
+.company-name {
+  color: #a8edea;
+  font-weight: 600;
 }
 
 /* Main content */
@@ -88,6 +128,47 @@ body {
   margin-top: 20px;
 }
 
+/* Footer styles */
+.footer {
+  margin-top: 40px;
+  padding: 20px 0;
+  text-align: center;
+  color: white;
+}
+
+.footer .powered-by {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.company-link {
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  padding: 8px;
+  margin: -8px;
+}
+
+.company-link:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.company-link:active {
+  transform: translateY(0);
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .container {
@@ -96,6 +177,24 @@ body {
   
   .header h1 {
     font-size: 2rem;
+  }
+  
+  .footer {
+    margin-top: 30px;
+    padding: 15px 0;
+  }
+  
+  .footer .powered-by {
+    padding: 12px;
+    max-width: 350px;
+  }
+  
+  .company-info {
+    font-size: 1rem;
+  }
+  
+  .company-logo {
+    height: 25px;
   }
   
   .upload-section {
@@ -114,5 +213,25 @@ body {
   
   .header p {
     font-size: 1rem;
+  }
+  
+  .footer {
+    margin-top: 20px;
+    padding: 10px 0;
+  }
+  
+  .footer .powered-by {
+    padding: 10px;
+    max-width: 300px;
+  }
+  
+  .company-info {
+    font-size: 0.9rem;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .company-logo {
+    height: 20px;
   }
 } 

@@ -17,45 +17,41 @@ if (process.env.GEMINI_API_KEY) {
   genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 }
 
-// Analysis prompt template
-const ANALYSIS_PROMPT = `You are a professional color analyst and beauty consultant. Analyze the provided image to determine the person's skin tone, undertone, contrast level, and seasonal color type.
+// Default analysis prompt template (hidden from frontend)
+const DEFAULT_ANALYSIS_PROMPT = `You are a professional and supportive personal color analyst using the 12-season color analysis framework (Light, True, and Deep versions of Summer, Winter, Spring, Autumn).
 
-Please provide your analysis in the following JSON format:
+Your goal is to analyze a user's natural skin tone, undertone (warm/cool/neutral), and contrast level from makeup-free images taken in natural light.
+
+Analyze the user's images and provide your final analysis as a single, minified JSON object. Do not include any text outside of the JSON object. The JSON object should have the following structure:
 
 {
-  "seasonal_type": "e.g., Deep Winter, Warm Autumn, Soft Summer, Bright Spring",
-  "analysis": {
-    "skin_tone": "Description of the skin tone (fair, light, medium, deep, etc.)",
-    "undertone": "Warm/Cool/Neutral",
-    "contrast": "High/Medium/Low"
-  },
-  "recommendations": {
-    "fashion_colors": {
-      "best_colors_description": "A detailed paragraph describing the best colors for this person, including specific color names and why they work well.",
-      "color_palette_hex": ["#RRGGBB", "#RRGGBB", "#RRGGBB", "#RRGGBB", "#RRGGBB"]
-    },
-    "hair_color": "Specific suggestions for hair color, including natural and dyed options, with explanations for why these work well.",
-    "makeup": {
-      "foundation": "Foundation advice including shade matching and formula recommendations.",
-      "blush": "Blush advice and specific color suggestions with explanations.",
-      "lipstick": "Lipstick advice and specific color suggestions with explanations.",
-      "eyeshadow": "Eyeshadow advice and specific color suggestions with explanations."
-    }
-  },
-  "final_encouragement": "A final positive and encouraging sentence for the user about their natural beauty and color choices."
-}
+    "seasonal_type": "e.g., Deep Winter",
+    "analysis": {
+      "skin_tone": "Description of the skin tone.",
+      "undertone": "Warm/Cool/Neutral",
+       "contrast": "High/Medium/Low"
+      },
+      "recommendations": {
+        "fashion_colors": {
+          "best_colors_description": "A paragraph describing the best colors.",
+           "color_palette_hex": ["#RRGGBB", "#RRGGBB", "#RRGGBB", "#RRGGBB", "#RRGGBB"]
+       },
+       "hair_color": "Suggestions for hair color.",
+       "makeup": {
+         "foundation": "Foundation advice.",
+          "blush": "Blush advice and color suggestions.",
+          "lipstick": "Lipstick advice and color suggestions.",
+          "eyeshadow": "Eyeshadow advice and color suggestions."
+        }
+      },
+      "final_encouragement": "A final positive and encouraging sentence for the user."
+  }
 
-Important guidelines:
-- Be specific and detailed in your recommendations
-- Include actual hex color codes for the color palette
-- Consider lighting conditions in the image
-- Provide practical, actionable advice
-- Be encouraging and positive
-- Focus on enhancing natural beauty
+Be warm, approachable, and professional. Ask clarifying questions as needed for accuracy. If the visual data is insufficient, respond with a JSON object like this: \`{"error": "clarifying_question", "question": "Your clarifying question here."}\`
 
-Respond only with the JSON object, no additional text.`;
+Treat every user uniquely and keep feedback encouraging and positive. You may offer visual examples when possible. Never guess without sufficient visual data.`;
 
-async function analyzeImage(imagePath, provider = 'gemini') {
+async function analyzeImage(imagePath, provider = 'gemini', customPrompt = null) {
   try {
     // Check if API keys are available
     if (provider === 'openai' && !openai) {
@@ -69,10 +65,13 @@ async function analyzeImage(imagePath, provider = 'gemini') {
     // Process image for AI compatibility
     const processedImageBuffer = await processImageForAI(imagePath);
     
+    // Use custom prompt if provided, otherwise use default
+    const promptToUse = customPrompt || DEFAULT_ANALYSIS_PROMPT;
+    
     if (provider === 'openai') {
-      return await analyzeWithOpenAI(processedImageBuffer);
+      return await analyzeWithOpenAI(processedImageBuffer, promptToUse);
     } else {
-      return await analyzeWithGemini(processedImageBuffer);
+      return await analyzeWithGemini(processedImageBuffer, promptToUse);
     }
   } catch (error) {
     console.error('AI analysis error:', error);
@@ -98,7 +97,7 @@ async function processImageForAI(imagePath) {
   }
 }
 
-async function analyzeWithOpenAI(imageBuffer) {
+async function analyzeWithOpenAI(imageBuffer, prompt) {
   if (!openai) {
     throw new Error('OpenAI client not initialized. Please set OPENAI_API_KEY environment variable.');
   }
@@ -112,7 +111,7 @@ async function analyzeWithOpenAI(imageBuffer) {
           content: [
             {
               type: "text",
-              text: ANALYSIS_PROMPT
+              text: prompt
             },
             {
               type: "image_url",
@@ -140,7 +139,7 @@ async function analyzeWithOpenAI(imageBuffer) {
   }
 }
 
-async function analyzeWithGemini(imageBuffer) {
+async function analyzeWithGemini(imageBuffer, prompt) {
   if (!genAI) {
     throw new Error('Gemini client not initialized. Please set GEMINI_API_KEY environment variable.');
   }
@@ -155,7 +154,7 @@ async function analyzeWithGemini(imageBuffer) {
       }
     };
 
-    const result = await model.generateContent([ANALYSIS_PROMPT, imagePart]);
+    const result = await model.generateContent([prompt, imagePart]);
     const response = await result.response;
     const analysisText = response.text();
     

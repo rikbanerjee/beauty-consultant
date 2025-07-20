@@ -57,6 +57,7 @@ const AnalysisResults = ({ results, isLoading, selectedProvider }) => {
   // Extract data from the results
   const observations = results.observations || results.sections?.observations;
   const reasoning = results.reasoning || results.sections?.reasoning;
+  const finalEncouragement = results.finalEncouragement || results.sections?.final_encouragement;
   const fashionColors = results.fashionColors || results.sections?.fashion_colors;
   const makeup = results.makeup || results.sections?.fashion_colors?.makeup;
   const disclaimer = results.disclaimer || results.sections?.disclaimer;
@@ -119,6 +120,16 @@ const AnalysisResults = ({ results, isLoading, selectedProvider }) => {
                 <i className="fas fa-lightbulb section-icon"></i> Here's Why
               </h4>
               <div className="section-content">{reasoning}</div>
+            </div>
+          )}
+
+          {/* Final Encouragement Section */}
+          {finalEncouragement && (
+            <div className="analysis-section encouragement-section">
+              <h4>
+                <i className="fas fa-heart section-icon"></i> Final Encouragement
+              </h4>
+              <div className="section-content">{finalEncouragement}</div>
             </div>
           )}
 

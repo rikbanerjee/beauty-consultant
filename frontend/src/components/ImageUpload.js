@@ -103,15 +103,23 @@ const ImageUpload = ({
       </div>
 
       <div className="form-group">
-        <label htmlFor="customPrompt">Custom Prompt (Optional):</label>
+        <label htmlFor="customPrompt">
+          <i className="fas fa-edit"></i> Custom Prompt (Optional)
+        </label>
         <textarea
           id="customPrompt"
           className="form-control"
-          rows="4"
-          placeholder="Leave empty to use default skin tone analysis prompt..."
+          rows="6"
+          placeholder="Leave empty to use the secure professional skin tone analysis prompt. Enter custom instructions only if you need specific modifications."
           value={customPrompt}
           onChange={(e) => setCustomPrompt(e.target.value)}
         />
+        {!customPrompt.trim() && (
+          <div className="prompt-info">
+            <i className="fas fa-shield-alt"></i>
+            <span>Using secure professional color analysis prompt</span>
+          </div>
+        )}
       </div>
 
       <button 

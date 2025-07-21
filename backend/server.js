@@ -12,10 +12,20 @@ const app = express();
 // Middleware
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-app-name.vercel.app', 'https://your-custom-domain.com'] 
+    ? ['https://your-app-name.vercel.app', 'https://your-custom-domain.com', 'https://thecustomhub.com'] 
     : 'http://localhost:3000',
   credentials: true
 }));
+
+// Allow iframe embedding from thecustomhub.com
+app.use((req, res, next) => {
+  // Remove default X-Frame-Options to allow iframe embedding
+  res.removeHeader('X-Frame-Options');
+  // Set Content-Security-Policy to allow iframe from thecustomhub.com
+  res.setHeader('Content-Security-Policy', "frame-ancestors 'self' https://thecustomhub.com");
+  next();
+});
+
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 

@@ -75,31 +75,34 @@ const ImageUpload = ({
         </div>
       )}
 
-      <div className="provider-selection">
-        <h3>AI Model:</h3>
-        <div className="provider-options">
-          <label className={`provider-option ${selectedProvider === 'openai' ? 'selected' : ''}`}>
-            <input
-              type="radio"
-              name="provider"
-              value="openai"
-              checked={selectedProvider === 'openai'}
-              onChange={(e) => setSelectedProvider(e.target.value)}
-            />
-            <span>OpenAI GPT-4 Vision</span>
-          </label>
-          <label className={`provider-option ${selectedProvider === 'gemini' ? 'selected' : ''}`}>
-            <input
-              type="radio"
-              name="provider"
-              value="gemini"
-              checked={selectedProvider === 'gemini'}
-              onChange={(e) => setSelectedProvider(e.target.value)}
-            />
-            <span>Google Gemini 2.0 Flash</span>
-          </label>
+      {/* AI Model Selection - Hidden in Production */}
+      {process.env.NODE_ENV !== 'production' && (
+        <div className="provider-selection">
+          <h3>AI Model:</h3>
+          <div className="provider-options">
+            <label className={`provider-option ${selectedProvider === 'openai' ? 'selected' : ''}`}>
+              <input
+                type="radio"
+                name="provider"
+                value="openai"
+                checked={selectedProvider === 'openai'}
+                onChange={(e) => setSelectedProvider(e.target.value)}
+              />
+              <span>OpenAI GPT-4 Vision</span>
+            </label>
+            <label className={`provider-option ${selectedProvider === 'gemini' ? 'selected' : ''}`}>
+              <input
+                type="radio"
+                name="provider"
+                value="gemini"
+                checked={selectedProvider === 'gemini'}
+                onChange={(e) => setSelectedProvider(e.target.value)}
+              />
+              <span>Google Gemini 2.0 Flash</span>
+            </label>
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="form-group">
         <label htmlFor="customPrompt">

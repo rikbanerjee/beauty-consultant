@@ -46,10 +46,26 @@ const AnalysisResults = ({ results, isLoading, selectedProvider }) => {
             <i className="fas fa-chart-line"></i> Analysis Results
           </h3>
         </div>
-        <div className="error-message">
-          <i className="fas fa-exclamation-triangle"></i>
-          <span>{results.error}</span>
-        </div>
+        {results.error === 'clarifying_question' && results.question ? (
+          <div className="clarifying-question">
+            <div className="question-icon">
+              <i className="fas fa-question-circle"></i>
+            </div>
+            <h4>We Need More Information</h4>
+            <div className="question-content">
+              <p>{results.question}</p>
+            </div>
+            <div className="question-tip">
+              <i className="fas fa-lightbulb"></i>
+              <span>Please upload a new photo that meets these requirements for the most accurate analysis.</span>
+            </div>
+          </div>
+        ) : (
+          <div className="error-message">
+            <i className="fas fa-exclamation-triangle"></i>
+            <span>{results.error}</span>
+          </div>
+        )}
       </div>
     );
   }
@@ -113,6 +129,8 @@ const AnalysisResults = ({ results, isLoading, selectedProvider }) => {
             </div>
           )}
 
+
+
           {/* Reasoning Section */}
           {reasoning && (
             <div className="analysis-section reasoning-section">
@@ -149,13 +167,6 @@ const AnalysisResults = ({ results, isLoading, selectedProvider }) => {
                   <div className="subsection-content">
                     {fashionColors.excellent_choices}
                   </div>
-                </div>
-              )}
-
-              {/* Color Palette */}
-              {colorPalette && (
-                <div className="color-palette-container" 
-                     dangerouslySetInnerHTML={{ __html: colorPalette }}>
                 </div>
               )}
 

@@ -138,6 +138,17 @@ function createTestResponse(responseType = 'warm_autumn') {
         disclaimer: '',
         full_response: ''
       }
+    },
+    clarifying_question: {
+      raw_response: `{
+  "error": "clarifying_question",
+  "question": "The image provided is lit with artificial blue light, which significantly alters the perception of skin tone and undertone. To give you the most accurate color analysis, could you please provide makeup-free photos taken in natural, soft daylight or with a color-corrected light source? This will ensure that I can accurately assess your skin's true colors."
+}`,
+      parsed_sections: {
+        error: 'clarifying_question',
+        question: 'The image provided is lit with artificial blue light, which significantly alters the perception of skin tone and undertone. To give you the most accurate color analysis, could you please provide makeup-free photos taken in natural, soft daylight or with a color-corrected light source? This will ensure that I can accurately assess your skin\'s true colors.',
+        full_response: ''
+      }
     }
   };
 
@@ -145,6 +156,11 @@ function createTestResponse(responseType = 'warm_autumn') {
   
   // Set the full_response to the raw_response for this specific type
   response.parsed_sections.full_response = response.raw_response;
+  
+  // Handle clarifying question response differently
+  if (responseType === 'clarifying_question') {
+    return response;
+  }
   
   // Generate color palette from hex codes
   try {

@@ -12,7 +12,7 @@ const app = express();
 // Middleware
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-app-name.vercel.app', 'https://your-custom-domain.com', 'https://thecustomhub.com'] 
+    ? ['https://beauty-consultant.vercel.app', 'https://thecustomhub.com'] 
     : 'http://localhost:3000',
   credentials: true
 }));
@@ -91,6 +91,19 @@ app.post('/api/analyze', upload.single('image'), async (req, res) => {
     // Handle test mode
     if (testMode === 'true' || testMode === true) {
       const testResponse = createTestResponse(testResponseType);
+      
+      // Check if this is a clarifying question test response
+      if (testResponseType === 'clarifying_question') {
+        return res.json({
+          success: true,
+          data: {
+            error: testResponse.parsed_sections.error,
+            question: testResponse.parsed_sections.question,
+            fullResponse: testResponse.raw_response
+          }
+        });
+      }
+      
       return res.json({
         success: true,
         data: {
@@ -123,20 +136,33 @@ app.post('/api/analyze', upload.single('image'), async (req, res) => {
     // Parse the AI response into structured sections
     const parsedSections = parseAnalysisResponse(analysisResult.raw_response);
 
-    res.json({
-      success: true,
-      data: {
-        ...analysisResult,
-        sections: parsedSections,
-        observations: parsedSections.observations,
-        reasoning: parsedSections.reasoning,
-        finalEncouragement: parsedSections.final_encouragement,
-        fashionColors: parsedSections.fashion_colors,
-        makeup: parsedSections.fashion_colors.makeup,
-        disclaimer: parsedSections.disclaimer,
-        fullResponse: parsedSections.full_response
-      }
-    });
+    // Check if the parsed response contains an error (like clarifying question)
+    if (parsedSections.error) {
+      res.json({
+        success: true,
+        data: {
+          ...analysisResult,
+          error: parsedSections.error,
+          question: parsedSections.question,
+          fullResponse: parsedSections.full_response
+        }
+      });
+    } else {
+      res.json({
+        success: true,
+        data: {
+          ...analysisResult,
+          sections: parsedSections,
+          observations: parsedSections.observations,
+          reasoning: parsedSections.reasoning,
+          finalEncouragement: parsedSections.final_encouragement,
+          fashionColors: parsedSections.fashion_colors,
+          makeup: parsedSections.fashion_colors.makeup,
+          disclaimer: parsedSections.disclaimer,
+          fullResponse: parsedSections.full_response
+        }
+      });
+    }
 
   } catch (error) {
     console.error('Analysis error:', error);
@@ -166,4 +192,13 @@ app.use('*', (req, res) => {
 });
 
 // Export for Vercel
-module.exports = app; 
+module.exports = app;
+
+// Start server if running directly (not in Vercel)
+if (require.main === module) {
+  const PORT = process.env.PORT || 5001;
+  app.listen(PORT, () => {
+    console.log(`🚀 Beauty Consultant API server running on port ${PORT}`);
+    console.log(`📝 API Documentation: http://localhost:${PORT}/api/health`);
+  });
+} 

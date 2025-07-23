@@ -10,7 +10,8 @@ const ImageUpload = ({
   selectedProvider, 
   setSelectedProvider,
   customPrompt,
-  setCustomPrompt
+  setCustomPrompt,
+  analysisResults
 }) => {
 
   const onDrop = useCallback((acceptedFiles) => {
@@ -63,46 +64,57 @@ const ImageUpload = ({
           </div>
         </div>
       ) : (
-        <div className="preview-area">
-          <img 
-            src={selectedImage.url} 
-            alt="Preview" 
-            className="uploaded-image"
-          />
-          <button className="remove-btn" onClick={handleRemoveImage}>
-            <i className="fas fa-times"></i>
-          </button>
-        </div>
+        <>
+          <div className="preview-area">
+            <img 
+              src={selectedImage.url} 
+              alt="Preview" 
+              className="uploaded-image"
+            />
+            <button className="remove-btn" onClick={handleRemoveImage}>
+              <i className="fas fa-times"></i>
+            </button>
+          </div>
+          
+          {/* Color Palette - Display right after image when analysis is complete */}
+          {analysisResults && analysisResults.sections?.fashion_colors_palette && (
+            <div className="color-palette-section">
+              <h4>
+                <i className="fas fa-palette"></i> Recommended Color Palette
+              </h4>
+              <div className="color-palette-container" 
+                   dangerouslySetInnerHTML={{ __html: analysisResults.sections.fashion_colors_palette }}>
+              </div>
+            </div>
+          )}
+        </>
       )}
 
-      {/* AI Model Selection - Hidden in Production */}
-      {process.env.NODE_ENV !== 'production' && (
-        <div className="provider-selection">
-          <h3>AI Model:</h3>
-          <div className="provider-options">
-            <label className={`provider-option ${selectedProvider === 'openai' ? 'selected' : ''}`}>
-              <input
-                type="radio"
-                name="provider"
-                value="openai"
-                checked={selectedProvider === 'openai'}
-                onChange={(e) => setSelectedProvider(e.target.value)}
-              />
-              <span>OpenAI GPT-4 Vision</span>
-            </label>
-            <label className={`provider-option ${selectedProvider === 'gemini' ? 'selected' : ''}`}>
-              <input
-                type="radio"
-                name="provider"
-                value="gemini"
-                checked={selectedProvider === 'gemini'}
-                onChange={(e) => setSelectedProvider(e.target.value)}
-              />
-              <span>Google Gemini 2.0 Flash</span>
-            </label>
-          </div>
+      <div className="provider-selection">
+        <h3>AI Model:</h3>
+        <div className="provider-options">
+          <label className={`provider-option ${selectedProvider === 'openai' ? 'selected' : ''}`}>
+            <input
+              type="radio"
+              name="provider"
+              value="openai"
+              checked={selectedProvider === 'openai'}
+              onChange={(e) => setSelectedProvider(e.target.value)}
+            />
+            <span>OpenAI GPT-4 Vision</span>
+          </label>
+          <label className={`provider-option ${selectedProvider === 'gemini' ? 'selected' : ''}`}>
+            <input
+              type="radio"
+              name="provider"
+              value="gemini"
+              checked={selectedProvider === 'gemini'}
+              onChange={(e) => setSelectedProvider(e.target.value)}
+            />
+            <span>Google Gemini 2.0 Flash</span>
+          </label>
         </div>
-      )}
+      </div>
 
       <div className="form-group">
         <label htmlFor="customPrompt">

@@ -40,6 +40,7 @@ const TestModeToggle = ({
               <option value="light_spring">Light Spring</option>
               <option value="error_response">Error Response</option>
               <option value="incomplete_response">Incomplete Response</option>
+              <option value="clarifying_question">Clarifying Question</option>
             </select>
           </div>
           <div className="test-mode-status">

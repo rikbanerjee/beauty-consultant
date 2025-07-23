@@ -12,7 +12,7 @@ function App() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [analysisResults, setAnalysisResults] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedProvider, setSelectedProvider] = useState(process.env.NODE_ENV === 'production' ? 'gemini' : 'openai');
+  const [selectedProvider, setSelectedProvider] = useState('openai');
   const [customPrompt, setCustomPrompt] = useState('');
 
   const handleImageUpload = (image) => {
@@ -82,24 +82,22 @@ function App() {
                 setSelectedProvider={setSelectedProvider}
                 customPrompt={customPrompt}
                 setCustomPrompt={setCustomPrompt}
+                analysisResults={analysisResults}
               />
             </div>
 
-            {/* Analysis Settings - Hidden in Production */}
-            {process.env.NODE_ENV !== 'production' && (
-              <div className="settings-card">
-                <h3>
-                  <i className="fas fa-cog"></i> Analysis Settings
-                </h3>
-                
-                <TestModeToggle 
-                  testMode={testMode}
-                  setTestMode={setTestMode}
-                  testResponseType={testResponseType}
-                  setTestResponseType={setTestResponseType}
-                />
-              </div>
-            )}
+            <div className="settings-card">
+              <h3>
+                <i className="fas fa-cog"></i> Analysis Settings
+              </h3>
+              
+              <TestModeToggle 
+                testMode={testMode}
+                setTestMode={setTestMode}
+                testResponseType={testResponseType}
+                setTestResponseType={setTestResponseType}
+              />
+            </div>
           </div>
 
           <div className="results-section">

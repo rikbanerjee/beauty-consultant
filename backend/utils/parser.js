@@ -41,6 +41,15 @@ function parseAnalysisResponse(responseText) {
       const jsonContent = cleanedText.substring(jsonStart, jsonEnd);
       const data = JSON.parse(jsonContent);
       
+      // Check if this is an error response with clarifying question
+      if (data.error === 'clarifying_question' && data.question) {
+        return {
+          error: 'clarifying_question',
+          question: data.question,
+          full_response: responseText
+        };
+      }
+      
       // Map JSON structure to our sections format
       sections.observations.overall_type = data.seasonal_type || '';
       

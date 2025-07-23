@@ -64,13 +64,14 @@ function App() {
   return (
     <div className="App">
       <div className="container">
+        {isDevelopment() && (
         <header className="header">
           <h1>
             <i className="fas fa-palette"></i> Skin Tone Color Advisor
           </h1>
           <p>Upload your photo and get personalized color recommendations</p>
         </header>
-
+  )}
         <main className="main-content">
           <div className="upload-section">
             <div className="upload-card">

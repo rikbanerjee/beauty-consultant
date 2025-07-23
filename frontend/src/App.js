@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import TestModeToggle from './components/TestModeToggle';
 import ImageUpload from './components/ImageUpload';
 import AnalysisResults from './components/AnalysisResults';
+import { isDevelopment, getDefaultProvider } from './utils/environment';
 import './App.css';
 
 
@@ -12,7 +13,7 @@ function App() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [analysisResults, setAnalysisResults] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedProvider, setSelectedProvider] = useState('openai');
+  const [selectedProvider, setSelectedProvider] = useState(isDevelopment() ? 'openai' : getDefaultProvider());
   const [customPrompt, setCustomPrompt] = useState('');
 
   const handleImageUpload = (image) => {
@@ -86,18 +87,20 @@ function App() {
               />
             </div>
 
-            <div className="settings-card">
-              <h3>
-                <i className="fas fa-cog"></i> Analysis Settings
-              </h3>
-              
-              <TestModeToggle 
-                testMode={testMode}
-                setTestMode={setTestMode}
-                testResponseType={testResponseType}
-                setTestResponseType={setTestResponseType}
-              />
-            </div>
+            {isDevelopment() && (
+              <div className="settings-card">
+                <h3>
+                  <i className="fas fa-cog"></i> Analysis Settings
+                </h3>
+                
+                <TestModeToggle 
+                  testMode={testMode}
+                  setTestMode={setTestMode}
+                  testResponseType={testResponseType}
+                  setTestResponseType={setTestResponseType}
+                />
+              </div>
+            )}
           </div>
 
           <div className="results-section">

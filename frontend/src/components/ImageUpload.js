@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { isDevelopment } from '../utils/environment';
 import './ImageUpload.css';
 
 const ImageUpload = ({ 
@@ -90,51 +91,55 @@ const ImageUpload = ({
         </>
       )}
 
-      <div className="provider-selection">
-        <h3>AI Model:</h3>
-        <div className="provider-options">
-          <label className={`provider-option ${selectedProvider === 'openai' ? 'selected' : ''}`}>
-            <input
-              type="radio"
-              name="provider"
-              value="openai"
-              checked={selectedProvider === 'openai'}
-              onChange={(e) => setSelectedProvider(e.target.value)}
-            />
-            <span>OpenAI GPT-4 Vision</span>
-          </label>
-          <label className={`provider-option ${selectedProvider === 'gemini' ? 'selected' : ''}`}>
-            <input
-              type="radio"
-              name="provider"
-              value="gemini"
-              checked={selectedProvider === 'gemini'}
-              onChange={(e) => setSelectedProvider(e.target.value)}
-            />
-            <span>Google Gemini 2.0 Flash</span>
-          </label>
-        </div>
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="customPrompt">
-          <i className="fas fa-edit"></i> Custom Prompt (Optional)
-        </label>
-        <textarea
-          id="customPrompt"
-          className="form-control"
-          rows="6"
-          placeholder="Leave empty to use the secure professional skin tone analysis prompt. Enter custom instructions only if you need specific modifications."
-          value={customPrompt}
-          onChange={(e) => setCustomPrompt(e.target.value)}
-        />
-        {!customPrompt.trim() && (
-          <div className="prompt-info">
-            <i className="fas fa-shield-alt"></i>
-            <span>Using secure professional color analysis prompt</span>
+      {isDevelopment() && (
+        <div className="provider-selection">
+          <h3>AI Model:</h3>
+          <div className="provider-options">
+            <label className={`provider-option ${selectedProvider === 'openai' ? 'selected' : ''}`}>
+              <input
+                type="radio"
+                name="provider"
+                value="openai"
+                checked={selectedProvider === 'openai'}
+                onChange={(e) => setSelectedProvider(e.target.value)}
+              />
+              <span>OpenAI GPT-4 Vision</span>
+            </label>
+            <label className={`provider-option ${selectedProvider === 'gemini' ? 'selected' : ''}`}>
+              <input
+                type="radio"
+                name="provider"
+                value="gemini"
+                checked={selectedProvider === 'gemini'}
+                onChange={(e) => setSelectedProvider(e.target.value)}
+              />
+              <span>Google Gemini 2.0 Flash</span>
+            </label>
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      {isDevelopment() && (
+        <div className="form-group">
+          <label htmlFor="customPrompt">
+            <i className="fas fa-edit"></i> Custom Prompt (Optional)
+          </label>
+          <textarea
+            id="customPrompt"
+            className="form-control"
+            rows="6"
+            placeholder="Leave empty to use the secure professional skin tone analysis prompt. Enter custom instructions only if you need specific modifications."
+            value={customPrompt}
+            onChange={(e) => setCustomPrompt(e.target.value)}
+          />
+          {!customPrompt.trim() && (
+            <div className="prompt-info">
+              <i className="fas fa-shield-alt"></i>
+              <span>Using secure professional color analysis prompt</span>
+            </div>
+          )}
+        </div>
+      )}
 
       <button 
         className="analyze-button"

@@ -76,6 +76,25 @@ NODE_ENV=development
 FRONTEND_URL=http://localhost:3000
 ```
 
+### Production Environment Variables
+
+For production deployment, you can control which features are visible:
+
+#### Frontend Environment Variables (Vercel/Netlify)
+
+```env
+# Show development features (model selection, test mode, custom prompts)
+REACT_APP_SHOW_DEV_FEATURES=true
+
+# Default AI provider when model selection is hidden
+REACT_APP_DEFAULT_PROVIDER=gemini
+```
+
+**Note**: 
+- In production, development features are hidden by default
+- Set `REACT_APP_SHOW_DEV_FEATURES=true` to show model selection and test mode
+- The default provider will be Gemini when model selection is hidden
+
 ## 📁 Project Structure
 
 ```

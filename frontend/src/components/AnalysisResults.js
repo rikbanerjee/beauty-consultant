@@ -78,7 +78,6 @@ const AnalysisResults = ({ results, isLoading, selectedProvider }) => {
   const makeup = results.makeup || results.sections?.fashion_colors?.makeup;
   const disclaimer = results.disclaimer || results.sections?.disclaimer;
   const fullResponse = results.fullResponse || results.sections?.full_response;
-  const colorPalette = results.sections?.fashion_colors_palette;
 
   return (
     <div className="results-card">

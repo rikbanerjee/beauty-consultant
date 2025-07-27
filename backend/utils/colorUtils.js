@@ -34,7 +34,6 @@ function createPaletteFromHex(hexColors) {
   }
   
   let html = '<div class="color-palette">';
-  html += '<h5>Recommended Color Palette:</h5>';
   html += '<div class="color-swatches">';
   
   for (let i = 0; i < Math.min(hexColors.length, 8); i++) {
@@ -116,7 +115,6 @@ function createPaletteFromText(text) {
   }
   
   let html = '<div class="color-palette">';
-  html += '<h5>Recommended Color Palette:</h5>';
   html += '<div class="color-swatches">';
   
   for (const color of colors) {

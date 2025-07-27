@@ -65,12 +65,7 @@ function App() {
     <div className="App">
       <div className="container">
         
-        {/* <header className="header">
-          <h1>
-            <i className="fas fa-palette"></i> Skin Tone Color Advisor
-          </h1>
-          <p>Upload your photo and get personalized color recommendations</p>
-        </header> */}
+      
  
         <main className="main-content">
           <div className={`upload-section ${isDevelopment() ? 'development' : ''}`}>

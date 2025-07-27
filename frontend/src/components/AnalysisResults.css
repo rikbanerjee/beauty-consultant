@@ -111,8 +111,8 @@
   margin-top: 0px;
   padding: 0;
   padding-top: 0;
-  width: 100%;
-  max-width: 100%;
+  width: 100vw;
+  max-width: 100vw;
   box-sizing: border-box;
   vertical-align: top;
 }
@@ -344,8 +344,8 @@
 
 .color-palette-container {
   margin: 0;
-  width: 100%;
-  max-width: 100%;
+  width: 100vw;
+  max-width: 100vw;
   overflow-x: auto;
   box-sizing: border-box;
 }
@@ -353,8 +353,8 @@
 .color-palette {
   margin: 0;
   padding: 0;
-  width: 100%;
-  max-width: 100%;
+  width: 100vw;
+  max-width: 100vw;
   overflow-x: auto;
   box-sizing: border-box;
 }
@@ -382,38 +382,44 @@
   padding: 0;
   scrollbar-width: thin;
   scrollbar-color: #cbd5e0 #f7fafc;
-  max-width: 100%;
-  width: 100%;
+  max-width: 100vw;
+  width: 100vw;
   box-sizing: border-box;
 }
 
 .color-swatches::-webkit-scrollbar {
-  height: 8px;
+  height: 12px;
 }
 
 .color-swatches::-webkit-scrollbar-track {
-  background: #f7fafc;
-  border-radius: 4px;
+  background: #f1f5f9;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
 }
 
 .color-swatches::-webkit-scrollbar-thumb {
-  background: #cbd5e0;
-  border-radius: 4px;
+  background: #94a3b8;
+  border-radius: 6px;
+  border: 1px solid #cbd5e0;
 }
 
 .color-swatches::-webkit-scrollbar-thumb:hover {
-  background: #a0aec0;
+  background: #64748b;
 }
 
-/* Mobile scrollbar styling */
+/* Mobile scrollbar styling - hide scrollbar on mobile */
 @media (max-width: 768px) {
   .color-swatches::-webkit-scrollbar {
-    height: 6px;
+    height: 0;
+    display: none;
+  }
+  
+  .color-swatches::-webkit-scrollbar-track {
+    display: none;
   }
   
   .color-swatches::-webkit-scrollbar-thumb {
-    background: #a0aec0;
-    border-radius: 3px;
+    display: none;
   }
 }
 

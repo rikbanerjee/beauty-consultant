@@ -85,9 +85,9 @@ const AnalysisResults = ({ results, isLoading, selectedProvider }) => {
         <h3>
           <i className="fas fa-chart-line"></i> Analysis Results
         </h3>
-        <div className="provider-badge">
+        {/* <div className="provider-badge">
           {selectedProvider === 'openai' ? 'OpenAI GPT-4' : 'Google Gemini'}
-        </div>
+        </div> */}
       </div>
 
       <div className="results-content">

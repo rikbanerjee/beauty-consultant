@@ -101,10 +101,10 @@
 
 .color-palette-section {
   border-left-color: #3182ce;
-  background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+  background: transparent;
   /* border: 0px solid #bee3f8; */
   border-top: none;
-  box-shadow: 0 4px 20px rgba(49, 130, 206, 0.08);
+  box-shadow: none;
   position: relative;
   overflow: hidden;
   margin-top: 0px;

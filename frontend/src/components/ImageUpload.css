@@ -276,12 +276,12 @@ textarea.form-control {
 /* Color Palette Section */
 .color-palette-section {
   margin: 0;
-  padding: 20px;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
+  padding: 5px;
+  background: transparent;
+  border: none;
   border-top: none;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 0;
+  box-shadow: none;
   position: relative;
   overflow: hidden;
   width: 100%;
@@ -308,7 +308,7 @@ textarea.form-control {
 }
 
 .color-palette-container {
-  margin: 16px 0;
+  margin: 1px 0;
   width: 100%;
   max-width: 100%;
   overflow-x: auto;

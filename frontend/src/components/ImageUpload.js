@@ -80,6 +80,9 @@ const ImageUpload = ({
           {/* Color Palette - Display right after image when analysis is complete */}
           {analysisResults && analysisResults.sections?.fashion_colors_palette && (
             <div className="color-palette-section">
+              <h4>
+                <i className="fas fa-palette"></i> Recommended Color Palette
+              </h4>
               <div className="color-palette-container" 
                    dangerouslySetInnerHTML={{ __html: analysisResults.sections.fashion_colors_palette }}>
               </div>

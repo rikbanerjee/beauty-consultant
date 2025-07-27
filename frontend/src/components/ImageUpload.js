@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { isDevelopment } from '../utils/environment';
 import './ImageUpload.css';
 
 const ImageUpload = ({ 

@@ -96,8 +96,13 @@ body {
 
 .upload-section {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 30px;
+}
+
+/* When in development mode, show two columns */
+.upload-section.development {
+  grid-template-columns: 1fr 1fr;
 }
 
 /* Cards */

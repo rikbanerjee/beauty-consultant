@@ -5,6 +5,9 @@
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border: 1px solid #e9ecef;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .results-header {
@@ -35,6 +38,9 @@
   background: #f9fafb;
   border-radius: 8px;
   border-left: 4px solid #6b7280;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 /* Add extra spacing for specific sections */
@@ -96,11 +102,16 @@
 .color-palette-section {
   border-left-color: #3182ce;
   background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
-  border: 1px solid #bee3f8;
+  /* border: 0px solid #bee3f8; */
+  border-top: none;
   box-shadow: 0 4px 20px rgba(49, 130, 206, 0.08);
   position: relative;
   overflow: hidden;
-  margin-top: 32px;
+  margin-top: 0px;
+  padding-top: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .color-palette-section::before {
@@ -109,8 +120,8 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #3182ce, #2c5282);
+  height: 1px;
+  /* background: linear-gradient(90deg, #3182ce, #2c5282); */ /*creates a top border */
 }
 
 .color-palette-section .section-icon {
@@ -330,17 +341,25 @@
 
 .color-palette-container {
   margin: 16px 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  box-sizing: border-box;
 }
 
 .color-palette {
-  margin: 16px 0;
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  box-sizing: border-box;
 }
 
 .color-palette h5 {
   font-size: 16px;
   font-weight: 600;
   color: #495057;
-  margin-bottom: 12px;
+  margin-bottom: 0;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -352,10 +371,46 @@
 }
 
 .color-swatches {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-  gap: 15px;
-  margin-top: 15px;
+  display: flex;
+  gap: 20px;
+  margin-top: 0;
+  overflow-x: auto;
+  padding: 0;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e0 #f7fafc;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.color-swatches::-webkit-scrollbar {
+  height: 8px;
+}
+
+.color-swatches::-webkit-scrollbar-track {
+  background: #f7fafc;
+  border-radius: 4px;
+}
+
+.color-swatches::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 4px;
+}
+
+.color-swatches::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}
+
+/* Mobile scrollbar styling */
+@media (max-width: 768px) {
+  .color-swatches::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .color-swatches::-webkit-scrollbar-thumb {
+    background: #a0aec0;
+    border-radius: 3px;
+  }
 }
 
 .color-swatch {
@@ -364,6 +419,8 @@
   align-items: center;
   text-align: center;
   transition: transform 0.2s ease;
+  flex-shrink: 0;
+  min-width: 200px;
 }
 
 .color-swatch:hover {
@@ -371,27 +428,27 @@
 }
 
 .color-preview {
-  width: 60px;
-  height: 60px;
-  border-radius: 12px;
-  border: 2px solid #e2e8f0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  margin-bottom: 8px;
+  width: 180px;
+  height: 180px;
+  border-radius: 20px;
+  border: 3px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 12px;
   transition: all 0.3s ease;
 }
 
 .color-swatch:hover .color-preview {
-  border-color: #3182ce;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  transform: scale(1.05);
+  border-color: #6b7280;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  transform: scale(1.03);
 }
 
 .color-name {
-  font-size: 0.75rem;
-  font-weight: 500;
+  font-size: 1.1rem;
+  font-weight: 600;
   color: #4a5568;
   line-height: 1.2;
-  max-width: 80px;
+  max-width: 200px;
   word-wrap: break-word;
 }
 
@@ -593,11 +650,19 @@
   .analysis-results {
     margin: 10px 0;
     padding: 16px;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    box-sizing: border-box;
   }
   
   .section {
     margin: 20px 0;
     padding: 18px;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    box-sizing: border-box;
   }
   
   .observations-section,
@@ -628,13 +693,27 @@
   }
   
   .color-swatches {
-    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
-    gap: 10px;
+    gap: 15px;
+    overflow-x: auto;
+    padding: 0;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+  
+  .color-swatch {
+    scroll-snap-align: start;
+  }
+  
+  .color-swatch {
+    min-width: 160px;
   }
   
   .color-preview {
-    width: 50px;
-    height: 50px;
+    width: 160px;
+    height: 160px;
   }
   
   .fashion-subsection {

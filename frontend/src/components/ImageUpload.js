@@ -8,10 +8,6 @@ const ImageUpload = ({
   onAnalyze, 
   selectedImage, 
   isLoading, 
-  selectedProvider, 
-  setSelectedProvider,
-  customPrompt,
-  setCustomPrompt,
   analysisResults
 }) => {
 
@@ -80,66 +76,18 @@ const ImageUpload = ({
           {/* Color Palette - Display right after image when analysis is complete */}
           {analysisResults && analysisResults.sections?.fashion_colors_palette && (
             <div className="color-palette-section">
-              <h4>
-                <i className="fas fa-palette"></i> Recommended Color Palette
-              </h4>
               <div className="color-palette-container" 
                    dangerouslySetInnerHTML={{ __html: analysisResults.sections.fashion_colors_palette }}>
               </div>
+              <h4>
+                <i className="fas fa-palette"></i> Recommended Color Palette
+              </h4>
             </div>
           )}
         </>
       )}
 
-      {isDevelopment() && (
-        <div className="provider-selection">
-          <h3>AI Model:</h3>
-          <div className="provider-options">
-            <label className={`provider-option ${selectedProvider === 'openai' ? 'selected' : ''}`}>
-              <input
-                type="radio"
-                name="provider"
-                value="openai"
-                checked={selectedProvider === 'openai'}
-                onChange={(e) => setSelectedProvider(e.target.value)}
-              />
-              <span>OpenAI GPT-4 Vision</span>
-            </label>
-            <label className={`provider-option ${selectedProvider === 'gemini' ? 'selected' : ''}`}>
-              <input
-                type="radio"
-                name="provider"
-                value="gemini"
-                checked={selectedProvider === 'gemini'}
-                onChange={(e) => setSelectedProvider(e.target.value)}
-              />
-              <span>Google Gemini 2.0 Flash</span>
-            </label>
-          </div>
-        </div>
-      )}
 
-      {isDevelopment() && (
-        <div className="form-group">
-          <label htmlFor="customPrompt">
-            <i className="fas fa-edit"></i> Custom Prompt (Optional)
-          </label>
-          <textarea
-            id="customPrompt"
-            className="form-control"
-            rows="6"
-            placeholder="Leave empty to use the secure professional skin tone analysis prompt. Enter custom instructions only if you need specific modifications."
-            value={customPrompt}
-            onChange={(e) => setCustomPrompt(e.target.value)}
-          />
-          {!customPrompt.trim() && (
-            <div className="prompt-info">
-              <i className="fas fa-shield-alt"></i>
-              <span>Using secure professional color analysis prompt</span>
-            </div>
-          )}
-        </div>
-      )}
 
       <button 
         className="analyze-button"
